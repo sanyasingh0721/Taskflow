@@ -1,0 +1,49 @@
+# Starts PostgreSQL, the API and the web app with one command:
+#   docker compose up --build
+# Then open http://localhost:3000 (demo login: demo@taskflow.dev / password123)
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: taskflow
+      POSTGRES_USER: taskflow
+      POSTGRES_PASSWORD: taskflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskflow -d taskflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/taskflow
+      DATABASE_USERNAME: taskflow
+      DATABASE_PASSWORD: taskflow
+      DATABASE_DRIVER: org.postgresql.Driver
+      JWT_SECRET: ${JWT_SECRET:-compose-dev-secret-change-me-32-chars-min}
+      CORS_ORIGIN: http://localhost:3000
+      SEED_DEMO: "true"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
