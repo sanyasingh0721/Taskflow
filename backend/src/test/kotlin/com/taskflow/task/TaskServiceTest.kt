@@ -49,7 +49,7 @@ class TaskServiceTest {
             service.updateStatus(userId = 2L, taskId = 5L, status = TaskStatus.DONE)
         }
 
-        assertEquals(HttpStatus.NOT_FOUND, ex.status)
+        assertEquals(HttpStatus.FORBIDDEN, ex.status)
     }
 
     @Test
