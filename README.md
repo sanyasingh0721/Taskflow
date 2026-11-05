@@ -6,7 +6,6 @@ TaskFlow is a small task tracker for teams. The backend is a REST API written in
 taskflow/
 ├── backend/               Spring Boot, Kotlin, JWT, JPA, Flyway, H2 or PostgreSQL
 ├── frontend/              React, TypeScript, Vite, React Query, React Router, Jest
-├── postman/               Postman collection and environment for API testing
 ├── docker-compose.yml     PostgreSQL + backend + frontend in one command
 └── .github/workflows/     CI: backend tests, frontend tests and build
 ```
@@ -91,8 +90,6 @@ Backend test reports are in `backend/build/reports/tests/test/index.html`.
 ## API documentation
 
 Swagger UI is at http://localhost:8080/swagger-ui.html and the raw OpenAPI document is at http://localhost:8080/v3/api-docs. To try protected endpoints, log in through `/api/auth/login`, copy the token, and paste it into the **Authorize** dialog.
-
-To test the API in Postman, import the two files in the `postman` folder. The collection saves the login token and IDs automatically, so run its folders in order.
 
 ## Configuration
 
